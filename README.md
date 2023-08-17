@@ -1,2 +1,2 @@
 # PersonelEkranSorgulama-Katmanli
-Geçici repo
+Ön yüz, loglama ve dto eklenecek
