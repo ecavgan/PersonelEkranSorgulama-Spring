@@ -1,2 +1,3 @@
 # PersonelEkranSorgulama
 
+Loglama eklenecek
