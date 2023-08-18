@@ -16,33 +16,33 @@ import com.ekran.personel.entity.Personel;
 import com.ekran.personel.service.PersonelService;
 
 @RestController
-@RequestMapping(path = "/api")
+@RequestMapping(path = "/personels")
 public class PersonelController {
 	
 	@Autowired
 	private PersonelService personelService;
 	
-	@GetMapping(path = "/personels")
+	@GetMapping
 	public List<Personel> getAllPersonel() {
 		return personelService.getAllPersonel();
 	}
 
-	@GetMapping(path = "/personels/personelId/{personelId}")
+	@GetMapping(path = "/personelId/{personelId}")
 	public Personel getSinglePersonel(@PathVariable Long personelId) {
 		return personelService.getPersonelById(personelId);
 	}
 	
-	@PostMapping(path = "/personels")
+	@PostMapping
 	public Personel createPersonel(@RequestBody Personel newPersonel) {
 		return personelService.createPersonel(newPersonel);
 	}
 	
-	@PutMapping(path = "/personels/personelId/{personelId}")
+	@PutMapping(path = "/personelId/{personelId}")
 	public Personel updatePersonel(@PathVariable Long personelId, @RequestBody Personel newPersonel) {
 		return personelService.updatePersonel(personelId, newPersonel);
 	}
 
-	@DeleteMapping(path = "/personels/personelId/{personelId}")
+	@DeleteMapping(path = "/personelId/{personelId}")
 	public void deletePersonel(@PathVariable Long personelId) {
 		personelService.deletePersonel(personelId);
 	}
