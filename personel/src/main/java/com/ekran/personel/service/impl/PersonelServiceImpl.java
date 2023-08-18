@@ -2,48 +2,57 @@ package com.ekran.personel.service.impl;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import com.ekran.personel.dto.PersonelDTO;
 import com.ekran.personel.entity.Personel;
 import com.ekran.personel.repository.PersonelRepository;
 import com.ekran.personel.service.PersonelService;
-
-import jakarta.persistence.EntityExistsException;
-import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class PersonelServiceImpl implements PersonelService {
 
 	private final PersonelRepository personelRepository;
-
-    public PersonelServiceImpl(PersonelRepository personelRepository) {
-        this.personelRepository = personelRepository;
-    }
+	private final ModelMapper modelMapper;
+	
+	public PersonelServiceImpl(PersonelRepository personelRepository, ModelMapper modelMapper) {
+		this.personelRepository = personelRepository;
+		this.modelMapper = modelMapper;
+	}
 	
 	@Override
-	public Personel getPersonelById(Long personelId) {
-		return personelRepository.findById(personelId).orElseThrow(EntityNotFoundException::new);
+	public PersonelDTO getPersonelById(Long personelId) {
+		Optional<Personel> personel = personelRepository.findById(personelId);
+		if (personel.isPresent()) {
+			return modelMapper.map(personel.get(), PersonelDTO.class);
+		}
+		
+		return null;
 	}
 
 	@Override
-	public List<Personel> getAllPersonel() {
-		return personelRepository.findAll();
+	public List<PersonelDTO> getAllPersonel() {
+		List<Personel> personels = personelRepository.findAll();
+		List<PersonelDTO> DTOs = personels.stream().map(personel -> modelMapper.map(personel, PersonelDTO.class)).collect(Collectors.toList());
+		return DTOs;
 	}
 
 	@Override
-	public Personel createPersonel(Personel newPersonel) {
+	public PersonelDTO createPersonel(PersonelDTO newPersonel) {
 		Optional<Personel> personel = personelRepository.findById(newPersonel.getId());
 		if (personel.isPresent()) {
 			throw new RuntimeException("Personel with this id already exists");
 		}
 		
-		return personelRepository.save(newPersonel);
+		personelRepository.save(modelMapper.map(newPersonel, Personel.class));
+		return newPersonel;
 	}
 
 	@Override
-	public Personel updatePersonel(Long personelId, Personel newPersonel)
+	public PersonelDTO updatePersonel(Long personelId, PersonelDTO newPersonel)
 	{
 		Optional<Personel> personel = personelRepository.findById(personelId);
 		
@@ -55,7 +64,7 @@ public class PersonelServiceImpl implements PersonelService {
 			foundPersonel.setAge(newPersonel.getAge());
 			
 			personelRepository.save(foundPersonel);
-			return foundPersonel;
+			return modelMapper.map(foundPersonel, PersonelDTO.class);
 		}
 		
 		return null;

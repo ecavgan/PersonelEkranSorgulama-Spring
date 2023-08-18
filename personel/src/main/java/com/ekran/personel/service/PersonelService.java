@@ -2,14 +2,14 @@ package com.ekran.personel.service;
 
 import java.util.List;
 
-import com.ekran.personel.entity.Personel;
+import com.ekran.personel.dto.PersonelDTO;
 
 public interface PersonelService {
 	
-	Personel getPersonelById(Long personelId);	
-	List<Personel> getAllPersonel();
+	PersonelDTO getPersonelById(Long personelId);	
+	List<PersonelDTO> getAllPersonel();
 	
-	Personel createPersonel(Personel personel);
-	Personel updatePersonel(Long personelId, Personel personel);
+	PersonelDTO createPersonel(PersonelDTO personel);
+	PersonelDTO updatePersonel(Long personelId, PersonelDTO personel);
 	void deletePersonel(Long personelId);
 }
